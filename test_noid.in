@@ -1,0 +1,20 @@
+A = []
+B = [1,2,3]
+C = A#B
+D = [[[1,2],3],4]
+E = lreduce + D
+F = lmap - 1 D
+print E
+print F
+G = lfilter != 1 D
+print G
+H = lfilter > 2 G
+flatten D
+if (B > D) then
+  print B
+endif
+
+while (not empty(B)) do
+  print head(B)
+  pop(B)
+endwhile
