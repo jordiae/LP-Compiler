@@ -14,3 +14,12 @@ Notes:
 4-no warnings: -Wno-write-strings
 
 5-recordar afegir parèntesis a les fulles d'una expressió booleana (veure todos)
+
+6-més eficient unordered set que map
+
+
+Notes II:
+-print, pop, flatten, assign aparentment funcionen
+-fer if i while
+-fer lfunc
+-fer booleans, relationals...

@@ -214,16 +214,85 @@ void ASTPrint(AST *a)
 }*/
 
 string concat(string s1, string s2) {
-  return s1 + s2; // esta malament, pero es per provar todo
+  if (s1.length() == 2)
+  return s2;
+  else if (s2.length() == 2)
+  return s1;
+  string s1_ = s1.substr(1,s1.length()-2);
+  string s2_ = s2.substr(1,s2.length()-2);
+  return "[" + s1_ + "," + s2_ + "]";
+}
+
+string head_pop(string s, int& posi, int& posf) {
+  if (s[1] == ']') {
+    return "";
+    posi = 0;
+    posf = 0;
+  }
+  string h = "";
+  if (s[1] >= '0' and s[1] <= '9') {
+    int i = 1;
+    while (s[i] >= '0' and s[i] <= '9') {
+      h += s[i];
+      i++;
+    }
+    posi = 1;
+    posf = i-1;
+  }
+  else {
+    int bracket_counter = 1;
+    h = s[1];
+    int i = 2;
+    while (bracket_counter > 0 and i < s.length()) {
+      if (s[i] == '[')
+      bracket_counter++;
+      else if (s[i] == ']')
+      bracket_counter--;
+      h+= s[i];
+      i++;
+    }
+    posi = 1;
+    posf = i-1;
+    
+    }
+  return h;
+}
+
+string head (string s) {
+  int x = 0;
+  int y = 0;
+  return head_pop(s,x,y);
+}
+
+string flatten(string s) {
+  string r = "";
+  int j = 0;
+  for (int i = 0; i < s.length(); i++) {
+    if ((s[i] != '[' and s[i] != ']' and s[i] != ',') or (s[i] == ',' and (r[j-1] != ',' and r[j-1] != '[')) or i == 0 or i == s.length()-1) {
+      r += s[i];
+      j++;
+    }
+  }
+  return r;
+}
+
+string pop(string s) {
+  int x = 0;
+  int y = 0;
+  string f = head_pop(s,x,y);
+  ///string r = s.substr(x,(y-x+1));
+  ///cout << "pop: " << f << " " << s << " " << r << " " << x << " " << y << endl;
+  string r = s.substr(0,x) + s.substr(y+2,s.length());
+  return r;
 }
 
 string evaluate(AST *a) {
   if (a == NULL) {
     return "";
   }
-  /*else if (a->kind == "head") {
-    return head()
-  }*/
+  else if (a->kind == "head") {
+    return head(symtab[child(a,0)->text]);
+  }
   else if (a->kind == "#") { // nomes sobre identificadors, assoc esquerra
     return concat(symtab[child(a,0)->text],symtab[child(a,1)->text]);
   }
@@ -235,12 +304,21 @@ string evaluate(AST *a) {
     }
     ///return "[" + evaluate(child(a,0)) + "]";
   }
+  else if (a->kind == "id") {
+    return symtab[a->text];
+  }
   else if (a->kind == "intconst") {
     if (a->right == NULL)
     return a->text;
     else {
       return a->text + "," + evaluate(a->right);
     }
+  }
+  else if (a->kind == "empty") { // not tested
+    if (symtab[child(a,0)->text] == "[]")
+    return "True";
+    else
+    return "False";
   }
 }
 
@@ -258,6 +336,14 @@ void execute(AST *a) {
   else if (a->kind == "print") {
     /// todo: list: list_val | ID ((CONCATTAG^ ID) | ) | unary | lfunc;
     ///cout << symtab[child(a,0)->text] << endl;
+    cout << evaluate(child(a,0)) << endl;
+    /*if (child(a,0)->kind == "id") {
+      cout << symtab[child(a,0)->text] << endl;
+    }
+    else {
+      cout << evaluate(child(a,0)) << endl;
+    }
+    return;
     if (child(a,0)->kind == "[") {
       cout << evaluate(child(a,0)) << endl;
     }
@@ -266,7 +352,15 @@ void execute(AST *a) {
     }
     else {
       cout << symtab[child(a,0)->text] << endl;
-    }
+    }*/
+    execute(a->right);
+  }
+  else if (a->kind == "flatten") {
+    symtab[child(a,0)->text] = flatten(symtab[child(a,0)->text]);
+    execute(a->right);
+  }
+  else if (a->kind == "pop") {
+    symtab[child(a,0)->text] = pop(symtab[child(a,0)->text]);
     execute(a->right);
   }
   
@@ -278,7 +372,7 @@ int main() {
   ANTLR(lists(&root), stdin);
   ///ANTLR(program(&root), stdin);
   ASTPrint(root);
-  ///execute(root);
+  execute(root);
 }
 
 void
