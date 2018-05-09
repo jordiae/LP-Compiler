@@ -213,9 +213,19 @@ void ASTPrint(AST *a)
   execute(a->right);
 }*/
 
+string concat(string s1, string s2) {
+  return s1 + s2; // esta malament, pero es per provar todo
+}
+
 string evaluate(AST *a) {
   if (a == NULL) {
     return "";
+  }
+  /*else if (a->kind == "head") {
+    return head()
+  }*/
+  else if (a->kind == "#") { // nomes sobre identificadors, assoc esquerra
+    return concat(symtab[child(a,0)->text],symtab[child(a,1)->text]);
   }
   else if (a->kind == "[") {
     if (a->right == NULL)
@@ -242,12 +252,21 @@ void execute(AST *a) {
     execute(a->down);
   }
   else if (a->kind == "=") {
-    ///symtab[child(a,0)->text] = evaluate(child(a,1));
+    symtab[child(a,0)->text] = evaluate(child(a,1));
     execute(a->right);
   }
   else if (a->kind == "print") {
     /// todo: list: list_val | ID ((CONCATTAG^ ID) | ) | unary | lfunc;
     ///cout << symtab[child(a,0)->text] << endl;
+    if (child(a,0)->kind == "[") {
+      cout << evaluate(child(a,0)) << endl;
+    }
+    else if (child(a,0)->kind == "#") {
+      cout << evaluate(child(a,0)) << endl;
+    }
+    else {
+      cout << symtab[child(a,0)->text] << endl;
+    }
     execute(a->right);
   }
   
@@ -257,8 +276,9 @@ void execute(AST *a) {
 int main() {
   AST *root = NULL;
   ANTLR(lists(&root), stdin);
+  ///ANTLR(program(&root), stdin);
   ASTPrint(root);
-  execute(root);
+  ///execute(root);
 }
 
 void
@@ -512,23 +532,23 @@ AST **_root;
   }
   else {
     if ( (LA(1)==ID) ) {
+      zzmatch(ID); zzsubchild(_root, &_sibling, &_tail); zzCONSUME;
       {
         zzBLOCK(zztasp2);
         zzMake0;
         {
-        zzmatch(ID); zzsubchild(_root, &_sibling, &_tail); zzCONSUME;
-        {
-          zzBLOCK(zztasp3);
-          zzMake0;
-          {
+        if ( (LA(1)==1) ) {
+          zzmatch(1);  zzCONSUME;
+        }
+        else {
           if ( (LA(1)==CONCATTAG) ) {
             {
-              zzBLOCK(zztasp4);
+              zzBLOCK(zztasp3);
               zzMake0;
               {
               zzmatch(CONCATTAG); zzsubroot(_root, &_sibling, &_tail); zzCONSUME;
               zzmatch(ID); zzsubchild(_root, &_sibling, &_tail); zzCONSUME;
-              zzEXIT(zztasp4);
+              zzEXIT(zztasp3);
               }
             }
           }
@@ -536,8 +556,6 @@ AST **_root;
             if ( (setwd2[LA(1)]&0x2) ) {
             }
             else {zzFAIL(1,zzerr2,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-          }
-          zzEXIT(zztasp3);
           }
         }
         zzEXIT(zztasp2);

@@ -1,0 +1,16 @@
+Preguntes
+1-@
+2-head només identificadors?
+3-manera correcta de plantejar la interpretacio?
+4-ok anar fent == "head" o s'hauria (es podria?) anar preguntant si es tract de regles (unary...)?
+
+resposta: si em queda temps, replantejar strings -> arbres, més estructurats
+
+Notes:
+1-mai expr: ___ (COMA expr)*
+2-posar parèntesis a nombres (per exemple, mes gran entre expressions numèriques? però no n'hi ha). a booleans no? => millor posar parèntesis només a booleans
+3-he posat més complexitat de la que es demanava a print etc
+
+4-no warnings: -Wno-write-strings
+
+5-recordar afegir parèntesis a les fulles d'una expressió booleana (veure todos)

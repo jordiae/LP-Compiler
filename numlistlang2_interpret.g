@@ -183,9 +183,19 @@ void ASTPrint(AST *a)
   execute(a->right);
 }*/
 
+string concat(string s1, string s2) {
+  return s1 + s2; // esta malament, pero es per provar todo
+}
+
 string evaluate(AST *a) {
   if (a == NULL) {
     return "";
+  }
+  /*else if (a->kind == "head") {
+    return head()
+  }*/
+  else if (a->kind == "#") { // nomes sobre identificadors, assoc esquerra
+    return concat(symtab[child(a,0)->text],symtab[child(a,1)->text]);
   }
   else if (a->kind == "[") {
     if (a->right == NULL)
@@ -212,12 +222,21 @@ void execute(AST *a) {
     execute(a->down);
   }
   else if (a->kind == "=") {
-    ///symtab[child(a,0)->text] = evaluate(child(a,1));
+    symtab[child(a,0)->text] = evaluate(child(a,1));
     execute(a->right);
   }
   else if (a->kind == "print") {
      /// todo: list: list_val | ID ((CONCATTAG^ ID) | ) | unary | lfunc;
     ///cout << symtab[child(a,0)->text] << endl;
+    if (child(a,0)->kind == "[") {
+      cout << evaluate(child(a,0)) << endl;
+    }
+    else if (child(a,0)->kind == "#") {
+      cout << evaluate(child(a,0)) << endl;
+    }
+    else {
+      cout << symtab[child(a,0)->text] << endl;
+    }
     execute(a->right);
   }
 
@@ -227,8 +246,9 @@ void execute(AST *a) {
 int main() {
   AST *root = NULL;
   ANTLR(lists(&root), stdin);
+  ///ANTLR(program(&root), stdin);
   ASTPrint(root);
-  execute(root);
+  ///execute(root);
 }
 >>
 
@@ -283,7 +303,8 @@ flatten_oper: FLATTEN_KEYWORD^ ID;
 print_oper: PRINT_KEYWORD^ list; /// no se si cal que pugui imprimir una llista sencera, pero ara mateix print no pot ser lultima instruccio pel cas ID ((CONCATTAG^ ID) | ) de list
 pop_oper: POP_KEYWORD^ OPAR! list CPAR!;
 ///list: list_val | list_function | ID;
-list: list_val | ID ((CONCATTAG^ ID) | ) | unary | lfunc;
+///list: list_val | ID ((CONCATTAG^ ID) | ) | unary | lfunc;
+list: list_val | ID ("@"! | (CONCATTAG^ ID) | ) | unary | lfunc;
 ///condition: boolean_expr ((binary_boolean_op)? boolean_expr)*;
 /// no provat que aquest canvi sigui necessari perque no surt al test, pero te pinta
 ///condition: boolean_expr ((binary_boolean_op|) boolean_expr)*;
@@ -298,8 +319,10 @@ list_val: OBRACKET^ ( ((list_val|NUM) (COMMA! (list_val|NUM))*) | ) CBRACKET!;
 
 ///boolean_expr: (NOT_KEYWORD)? ((EMPTY_KEYWORD OPAR ID CPAR) | (list_relational));
 ///boolean_expr: (NOT_KEYWORD^|) (((EMPTY_KEYWORD^ OPAR! ID CPAR!) | (list_relational))); /// nota: falten ands, ors,... expressions booleanes compostes? NO, ja esta
-boolean_expr: (NOT_KEYWORD^|) (((empty) | (list_relational)));
+boolean_expr: (NOT_KEYWORD^|) (((empty) | (list_relational))); /// aqui, afegir parentesis i tornar a comencar todp (?)
 empty: EMPTY_KEYWORD^ OPAR! ID CPAR!;
+
+/// todo: afegir parentesis als booleans, com a les expressions de nombres del principi  (i: multiples nots?)
 
 /// dubte: empty podria rebre una cosa que no fos un identificador? todo, i comprovar que sempre es pugui fer amb qualsevol tipus de llista (o no, si s'exigeix aplanada?)
 
