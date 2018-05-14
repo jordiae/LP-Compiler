@@ -23,3 +23,15 @@ Notes II:
 -fer if i while
 -fer lfunc
 -fer booleans, relationals...
+
+
+Preguntes finals:
+
+-Longitud treball Swift
+
+-Es pot fer servir C++11?
+
+-OK acceptar que head només pugui agafar identificadors?
+
+
+-falta testejar and, or, parentèsis...

@@ -2,7 +2,7 @@
 #define tokens_h
 /* tokens.h -- List of labelled tokens and stuff
  *
- * Generated from: numlistlang2_interpret2.g
+ * Generated from: numlistlang2_def.g
  *
  * Terence Parr, Will Cohen, and Hank Dietz: 1989-2001
  * Purdue University Electrical Engineering
@@ -33,16 +33,18 @@
 #define NEQUAL 23
 #define GREATER 24
 #define LESSER 25
-#define NOT_KEYWORD 26
-#define AND_KEYWORD 27
-#define OR_KEYWORD 28
-#define CONCATTAG 29
-#define ID 30
-#define NUM 31
-#define OBRACKET 32
-#define CBRACKET 33
-#define COMMA 34
-#define SPACE 35
+#define GEQUAL 26
+#define LEQUAL 27
+#define NOT_KEYWORD 28
+#define AND_KEYWORD 29
+#define OR_KEYWORD 30
+#define CONCATTAG 31
+#define ID 32
+#define NUM 33
+#define OBRACKET 34
+#define CBRACKET 35
+#define COMMA 36
+#define SPACE 37
 
 #ifdef __USE_PROTOS
 void lists(AST**_root);
