@@ -35,3 +35,7 @@ Preguntes finals:
 
 
 -falta testejar and, or, parentèsis...
+
+-preguntar si bool ok
+
+-crec que no faig bé prioritat d'ands vs ors

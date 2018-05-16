@@ -1,7 +1,7 @@
 
 /* parser.dlg -- DLG Description of scanner
  *
- * Generated from: numlistlang2_def.g
+ * Generated from: numlistlang2_def2.g
  *
  * Terence Parr, Will Cohen, and Hank Dietz: 1989-2001
  * Purdue University Electrical Engineering

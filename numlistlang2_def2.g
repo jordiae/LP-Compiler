@@ -349,7 +349,7 @@ elem evaluate(AST *a) {
     return e;
   }
 }
-
+/// todo: unificar comparacions?
 bool equalLists (elem e1, elem e2) { // recordem que hem assumit que nomes s aplica a llistes aplanades
     ///return evaluate(a1) == evaluate (a2);
     if (e1.elems.size() != e2.elems.size())
@@ -547,12 +547,15 @@ flatten_oper: FLATTEN_KEYWORD^ ID;
 print_oper: PRINT_KEYWORD^ list;
 pop_oper: POP_KEYWORD^ OPAR! list CPAR!;
 list: list_val | ID ("@"! | (CONCATTAG^ ID) | ) | unary | lfunc;
-condition: boolean_expr (binary_boolean_op boolean_expr)*;
-binary_boolean_op: AND_KEYWORD^ | OR_KEYWORD^;
+///condition: boolean_expr (binary_boolean_op boolean_expr)*;
+condition: condition2 (OR_KEYWORD^ condition2)*;
+condition2: boolean_expr (AND_KEYWORD^ boolean_expr)*;
+///binary_boolean_op: AND_KEYWORD^ | OR_KEYWORD^;
 list_val: OBRACKET^ ( ((list_val|NUM) (COMMA! (list_val|NUM))*) | ) CBRACKET!;
 
 
 boolean_expr: (NOT_KEYWORD^|) (((empty) | (list_relational) | (OPAR! condition CPAR!))); /// parentesis i tornar a comencar (revisar: todo)
+///boolean_expr: ((empty) | (list_relational) | (OPAR! condition CPAR!));
 empty: EMPTY_KEYWORD^ OPAR! ID CPAR!;
 
 list_relational: list (EQUAL^ | NEQUAL^ | GREATER^ | LESSER^ | GEQUAL | LEQUAL) list;/// nomes aplanades en realitat...

@@ -2,7 +2,7 @@
 #define tokens_h
 /* tokens.h -- List of labelled tokens and stuff
  *
- * Generated from: numlistlang2_def.g
+ * Generated from: numlistlang2_def2.g
  *
  * Terence Parr, Will Cohen, and Hank Dietz: 1989-2001
  * Purdue University Electrical Engineering
@@ -107,9 +107,9 @@ extern void condition();
 #endif
 
 #ifdef __USE_PROTOS
-void binary_boolean_op(AST**_root);
+void condition2(AST**_root);
 #else
-extern void binary_boolean_op();
+extern void condition2();
 #endif
 
 #ifdef __USE_PROTOS
@@ -186,13 +186,12 @@ extern SetWordType zzerr3[];
 extern SetWordType zzerr4[];
 extern SetWordType zzerr5[];
 extern SetWordType zzerr6[];
-extern SetWordType zzerr7[];
 extern SetWordType setwd2[];
+extern SetWordType zzerr7[];
 extern SetWordType zzerr8[];
 extern SetWordType zzerr9[];
 extern SetWordType zzerr10[];
-extern SetWordType zzerr11[];
 extern SetWordType setwd3[];
+extern SetWordType zzerr11[];
 extern SetWordType zzerr12[];
-extern SetWordType zzerr13[];
 extern SetWordType setwd4[];
